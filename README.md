@@ -11,6 +11,17 @@ A comprehensive battery monitoring application for Android devices.
 
 VoltCheck is an advanced battery monitoring application designed for Android devices. It provides real-time battery statistics, health monitoring, and comprehensive charging analysis. Built with modern Material Design principles, the application offers an intuitive and professional interface for tracking device battery performance.
 
+## Screenshots
+
+<div align="center">
+  <img src="UI/screen.png" alt="Main Screen" width="300"/>
+  <img src="UI/setings.png" alt="Settings Screen" width="300"/>
+</div>
+
+<p align="center">
+  <em>Main monitoring interface and Settings page</em>
+</p>
+
 ## Features
 
 ### Core Monitoring
