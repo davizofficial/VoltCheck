@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Dark theme -->
+    <style name="Theme.VoltCheck" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorPrimaryVariant">@color/purple_light</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/cyan_bright</item>
+        <item name="colorSecondaryVariant">@color/cyan_light</item>
+        <item name="colorOnSecondary">@color/white</item>
+        
+        <!-- Status bar color - TETAP TRANSPARAN/NORMAL -->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        
+        <!-- Background -->
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="backgroundColor">@color/background_light</item>
+        
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_dark</item>
+        <item name="android:textColorSecondary">@color/gray_text</item>
+    </style>
+</resources>

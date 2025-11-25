@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VoltCheck</string>
+    <string name="app_title">CheckVolt</string>
+    
+    <!-- Battery Information Labels -->
+    <string name="battery_information">Informasi Baterai</string>
+    <string name="device_information">Informasi Perangkat</string>
+    <string name="status_label">Status</string>
+    <string name="connection_label">Koneksi</string>
+    <string name="level_label">Level</string>
+    <string name="condition_label">Kondisi</string>
+    <string name="technology_label">Teknologi</string>
+    <string name="max_capacity_label">Kapasitas Maks</string>
+    <string name="temperature_label">Suhu</string>
+    <string name="voltage_label">Tegangan</string>
+    <string name="manufacturer_label">Produsen</string>
+    <string name="model_label">Model</string>
+    <string name="os_version_label">Versi OS</string>
+    <string name="build_id_label">ID Build</string>
+    
+    <!-- Status Values -->
+    <string name="not_charging">Tidak Mengisi</string>
+    <string name="charging">Mengisi</string>
+    <string name="battery_type">Baterai</string>
+    <string name="good">Baik</string>
+    
+    <!-- Main Activity -->
+    <string name="current">Arus</string>
+    <string name="voltage">Tegangan</string>
+    <string name="temperature">Suhu</string>
+    <string name="battery_level">Level Baterai</string>
+    <string name="charging_type">Tipe Pengisian</string>
+    <string name="status">Status</string>
+    <string name="test_mode">Mode Tes</string>
+    <string name="history">Riwayat</string>
+    <string name="threshold_settings">Pengaturan Ambang</string>
+    <string name="start_service">Mulai Layanan</string>
+    <string name="stop_service">Hentikan Layanan</string>
+    
+    <!-- Test Mode -->
+    <string name="start_test">Mulai Tes</string>
+    <string name="stop_test">Hentikan Tes</string>
+    <string name="save_session">Simpan Sesi</string>
+    <string name="avg_current">Arus Rata-rata</string>
+    <string name="max_current">Arus Maksimal</string>
+    <string name="stability">Stabilitas</string>
+    <string name="voltage_drop">Penurunan Tegangan</string>
+    <string name="conclusion">Kesimpulan</string>
+    
+    <!-- History -->
+    <string name="empty_history">Belum ada riwayat tes</string>
+    <string name="export">Ekspor CSV</string>
+    
+    <!-- Threshold Dialog -->
+    <string name="low_current_threshold">Ambang Arus Rendah</string>
+    <string name="high_temp_threshold">Ambang Suhu Tinggi</string>
+    <string name="stability_threshold">Ambang Stabilitas</string>
+    
+    <!-- Menu -->
+    <string name="action_about">Tentang</string>
+    <string name="action_export">Ekspor</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_test_mode">Buka Mode Tes</string>
+    <string name="cd_history">Buka Riwayat</string>
+    <string name="cd_rename">Ubah Nama Sesi</string>
+    <string name="cd_delete">Hapus Sesi</string>
+    
+    <!-- Settings -->
+    <string name="settings">Pengaturan</string>
+    
+    <!-- Language Options -->
+    <string-array name="language_options">
+        <item>English</item>
+        <item>Indonesia</item>
+    </string-array>
+    
+    <!-- Theme Options -->
+    <string-array name="theme_options">
+        <item>Terang</item>
+        <item>Gelap</item>
+        <item>Sistem Default</item>
+    </string-array>
+    
+    <!-- Refresh Interval Options -->
+    <string-array name="refresh_interval_options">
+        <item>0.5 detik</item>
+        <item>1 detik</item>
+        <item>2 detik</item>
+        <item>5 detik</item>
+    </string-array>
+    
+    <!-- Units Options -->
+    <string-array name="units_options">
+        <item>mA</item>
+        <item>Ampere</item>
+        <item>V</item>
+    </string-array>
+    
+    <!-- Alarm Section -->
+    <string name="alarm_settings">Pengaturan Alarm</string>
+    <string name="full_charge_alarm">Alarm Baterai Penuh</string>
+    <string name="alarm_level">Level Alarm</string>
+    <string name="alarm_level_format">Peringatan pada %d%%</string>
+    
+    <!-- Battery Info Section -->
+    <string name="battery_info_settings">Pengaturan Info Baterai</string>
+    <string name="design_capacity">Kapasitas Desain (mAh)</string>
+    <string name="show_time_to_full">Tampilkan Waktu Hingga Penuh</string>
+    <string name="time_remaining">Waktu Hingga Penuh: %s</string>
+    <string name="calculating">Menghitung...</string>
+</resources>
