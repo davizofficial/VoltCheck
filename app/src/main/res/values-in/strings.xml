@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VoltCheck</string>
-    <string name="app_title">CheckVolt</string>
+    <string name="app_title">VoltCheck</string>
     
     <!-- Battery Information Labels -->
     <string name="battery_information">Informasi Baterai</string>
