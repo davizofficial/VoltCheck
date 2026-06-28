@@ -226,4 +226,60 @@ public class NotificationUtil {
         
         manager.notify(NOTIFICATION_ID_ALERT, notification);
     }
+    
+    /**
+     * Mengirim notifikasi baterai hampir penuh (80%)
+     */
+    public static void sendBatteryAlmostFullAlert(Context context, int level) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        manager.cancel(NOTIFICATION_ID_ALERT);
+        
+        Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID_ALERTS)
+                .setContentTitle("🔋 Battery Almost Full")
+                .setContentText("Battery has reached " + level + "%.")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
+        
+        manager.notify(NOTIFICATION_ID_ALERT, notification);
+    }
+    
+    /**
+     * Mengirim notifikasi baterai penuh (100%)
+     */
+    public static void sendBatteryFullAlert(Context context, int level) {
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        manager.cancel(NOTIFICATION_ID_ALERT);
+        
+        Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID_ALERTS)
+                .setContentTitle("🔋 Battery Full!")
+                .setContentText("Battery has reached " + level + "%. Please unplug the charger.")
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .build();
+        
+        manager.notify(NOTIFICATION_ID_ALERT, notification);
+    }
 }

@@ -162,7 +162,7 @@ public class BatteryService extends Service {
             int alarmLevel = preferences.getInt("alarm_level", 100);
             if (level >= alarmLevel && !hasAlarmPlayed) {
                 playAlarmSound();
-                NotificationUtil.createForegroundNotification(this, "Battery Alarm: " + level + "%");
+                NotificationUtil.sendBatteryFullAlert(this, level);
                 hasAlarmPlayed = true;
             }
         }
@@ -170,7 +170,8 @@ public class BatteryService extends Service {
         // Cek Almost Full (80%)
         boolean almostFullAlert = preferences.getBoolean("alert_almost_full", false);
         if (almostFullAlert && level >= 80 && !hasAlmostFullPlayed) {
-            NotificationUtil.createForegroundNotification(this, "Battery Almost Full: " + level + "%");
+            NotificationUtil.sendBatteryAlmostFullAlert(this, level);
+            playAlarmSound(); // also play alarm sound for almost full
             hasAlmostFullPlayed = true;
         }
         
