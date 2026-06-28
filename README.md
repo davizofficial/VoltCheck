@@ -1,15 +1,19 @@
 # VoltCheck
 
-A comprehensive battery monitoring application for Android devices.
+> 🌟 **A 100% Free & Open Source Project**
 
+A comprehensive battery and electrical current monitoring application for Android devices.
+
+[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/davizofficial/VoltCheck)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://developer.android.com)
 [![Language](https://img.shields.io/badge/Language-Java-orange.svg)](https://www.java.com)
 [![Min SDK](https://img.shields.io/badge/Min%20SDK-24-blue.svg)](https://developer.android.com/about/versions/nougat)
-[![License](https://img.shields.io/badge/License-Open%20Source-brightgreen.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+![Views](https://komarev.com/ghpvc/?username=davizofficial&repo=VoltCheck)
 
 ## Overview
 
-VoltCheck is an advanced battery monitoring application designed for Android devices. It provides real-time battery statistics, health monitoring, and comprehensive charging analysis. Built with modern Material Design principles, the application offers an intuitive and professional interface for tracking device battery performance.
+**VoltCheck** is an advanced electrical measurement and battery diagnostic application designed for Android devices. Its primary function is to measure and display the real-time electrical current (Voltage and Ampere) actively flowing into your battery during charging. Beyond basic battery percentages, VoltCheck offers a deep dive into your device's power intake, battery health, and charging stability. Built with modern Material Design principles, the application provides an intuitive, professional, and reliable interface for anyone looking to evaluate their device's battery and charging performance.
 
 ## Screenshots
 
@@ -22,79 +26,81 @@ VoltCheck is an advanced battery monitoring application designed for Android dev
   <em>Main monitoring interface and Settings page</em>
 </p>
 
+## The Problem: Why VoltCheck?
+
+In today's fast-paced world, smartphones are essential, and their charging efficiency is critical. However, users often face several hidden issues:
+- **Counterfeit Accessories**: Fake chargers and damaged cables may claim to support "Fast Charging" but secretly deliver low, unstable currents that take hours to charge your device.
+- **Battery Degradation**: Over time, extreme temperatures and poor charging habits silently destroy battery health.
+- **Unstable Power Supplies**: Surges and drops in electrical current can damage the phone's internal charging IC.
+
+Without specialized hardware, a normal user cannot see what is actually happening during a charge cycle.
+
+## The Solution
+
+**VoltCheck** solves this by turning your smartphone into a portable electrical multimeter. By tapping directly into Android's native Battery Manager API, it continuously reads the raw data from your device's power sensors. 
+- You can instantly verify if a new charger or cable is delivering the promised speed (e.g., detecting if it outputs a healthy 2000mA or a weak 300mA).
+- It alerts you if the battery temperature reaches dangerous levels.
+- It provides audible alarms when the battery reaches optimal charge limits (like 80% or 100%) to prevent overcharging degradation.
+
+## How It Works (Workflow)
+
+The application operates as a foreground service that continuously polls sensor data, evaluates it against user-defined thresholds, and triggers UI updates or system notifications.
+
+```mermaid
+graph TD
+    A[Charger Connected] --> B[BatteryService Starts]
+    B --> C{Read Hardware Sensors}
+    C -->|Current mA| D[Calculate Ampere]
+    C -->|Voltage mV| E[Calculate Volts]
+    C -->|Temperature °C| F[Thermal Check]
+    
+    D & E --> G[Calculate Power Watts]
+    
+    G & F --> H{Check User Thresholds}
+    H -->|Current > Target| I[Trigger Fast Charging Alert]
+    H -->|Temp > Limit| J[Trigger High Temp Alert]
+    H -->|Capacity = 80%/100%| K[Trigger Full/Almost Full Alarm]
+    
+    H --> L[Update UI Real-time]
+    L --> C
+```
+
 ## Features
 
 ### Core Monitoring
-- Real-time current measurement (mA/Ampere)
-- Voltage tracking with high precision
-- Temperature monitoring
-- Battery level percentage
-- Battery health status
-- Capacity information display
-- Min/Max current tracking
+- **Real-Time Electrical Measurement**: Track live incoming current (mA / Ampere) and Voltage (V) with high precision.
+- **Thermal Monitoring**: Keep an eye on battery temperature to prevent overheating damage.
+- **Battery Health Diagnostics**: View condition, technology (e.g., Li-ion), and raw design capacity.
 
-### Advanced Capabilities
-- Time to full charge estimation
-- Historical data logging
-- CSV data export functionality
-- Background monitoring service
-- Customizable refresh intervals (0.5s - 5s)
-- Design capacity configuration
+### Smart Notification System
+- **Almost Full Alert (80%)**: Protect battery lifespan by unplugging before maximum stress.
+- **Full Charge Alarm**: Audible alarm when the battery hits 100%.
+- **Fast Charging Detection**: Instant notification when high-speed charging is successfully established.
+- **Slow Charging / Unstable Current Warnings**: Get warned immediately if your cable is faulty.
+- **Overheating Alerts**: Safety notifications when the device becomes too hot.
 
-### Notification System
-- Battery full alerts
-- Low battery/slow charging warnings
-- Fast charging detection
-- High temperature alerts
-- Fully customizable notification preferences
+### Advanced Capabilities & Customization
+- **Background Service**: Uninterrupted monitoring even when the app is closed.
+- **Custom Refresh Intervals**: Adjust polling rates (1s, 5s, 10s) to balance accuracy and power consumption.
+- **Multi-language Support**: Fully localized in English and Indonesian.
+- **Data Export**: Save and export historical charging sessions to CSV format for external analysis.
 
-### Customization Options
-- Dark mode support
-- Multi-language support (English, Indonesian)
-- Unit selection (mA/Ampere)
-- Decimal precision toggle
-- Custom battery level alarms
-- Configurable alarm thresholds
+## Electrical Formulas Used
 
-### Data Management
-- Export battery data to CSV format
-- Share exported data
-- Clear history functionality
-- Session summary tracking
+VoltCheck relies on standard electrical formulas to compute the data shown on your screen. Here is a quick reference:
 
-## Technical Specifications
-
-### Technology Stack
-- **Language**: Java
-- **Minimum SDK**: Android 7.0 (API 24)
-- **Target SDK**: Android 13 (API 33)
-- **Build System**: Gradle
-- **UI Framework**: Material Design Components
-- **Charting Library**: MPAndroidChart v3.1.0
-- **Data Persistence**: SharedPreferences, File System
-
-### Architecture
-- MVVM (Model-View-ViewModel) pattern
-- Service-based background monitoring
-- Modular component design
-- Efficient data logging system
-
-### Key Components
-```
-MainActivity          - Primary battery monitoring interface
-SettingsActivity      - Comprehensive settings management
-BatteryService        - Background monitoring service
-BatteryDataLogger     - Data logging and export system
-LocaleHelper          - Multi-language support handler
-NotificationUtil      - Notification management system
-```
+- **Current (I)**: Measured in Amperes (A) or milliamperes (mA). 
+  - `1 A = 1000 mA`
+- **Voltage (V)**: The electrical pressure, measured in Volts (V).
+- **Power (P)**: The total charging speed, measured in Watts (W).
+  - `Power (W) = Voltage (V) × Current (A)`
+  - *Example: If your device is receiving 4.2V at 2000mA (2A), the charging power is 8.4W.*
 
 ## System Requirements
 
 - Android 7.0 (Nougat) or higher
-- Device with battery current measurement support
-- Storage permission for data export functionality
-- Approximately 10MB of storage space
+- Device with accessible battery current measurement hardware
+- Storage permission (for CSV data export)
 
 ## Installation
 
@@ -105,168 +111,42 @@ NotificationUtil      - Notification management system
 git clone https://github.com/davizofficial/VoltCheck.git
 cd VoltCheck
 ```
-
-2. Open the project in Android Studio (Arctic Fox or newer recommended)
-
+2. Open the project in Android Studio.
 3. Build the project:
 ```bash
 ./gradlew assembleDebug
 ```
 
-4. Install on device:
-```bash
-./gradlew installDebug
-```
-
 ### From Release
-
-Download the latest APK from the [Releases](https://github.com/davizofficial/VoltCheck/releases) page and install on your Android device.
-
-## Usage Guide
-
-### Initial Setup
-1. Launch the application to view real-time battery statistics
-2. Grant necessary permissions when prompted
-3. Navigate to Settings to customize preferences
-
-### Monitoring
-- Main screen displays current battery metrics
-- Swipe or scroll to view detailed information
-- Min/Max values are tracked automatically
-
-### Configuration
-1. Tap the Settings icon in the top-right corner
-2. Configure refresh interval, units, and display preferences
-3. Enable background service for continuous monitoring
-4. Set custom alarms for specific battery levels
-
-### Data Export
-1. Navigate to Settings > Data & Permissions
-2. Tap "Export Data"
-3. Choose to share or save the CSV file
-4. Optionally clear data after export
-
-## Project Structure
-
-```
-VoltCheck/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/voltcheck/app/
-│   │   │   │   ├── MainActivity.java
-│   │   │   │   ├── SettingsActivity.java
-│   │   │   │   ├── BatteryService.java
-│   │   │   │   └── utils/
-│   │   │   │       ├── BatteryDataLogger.java
-│   │   │   │       ├── LocaleHelper.java
-│   │   │   │       └── NotificationUtil.java
-│   │   │   ├── res/
-│   │   │   │   ├── layout/
-│   │   │   │   ├── drawable/
-│   │   │   │   ├── values/
-│   │   │   │   └── values-night/
-│   │   │   └── AndroidManifest.xml
-│   └── build.gradle
-├── gradle/
-├── .gitignore
-├── build.gradle
-├── settings.gradle
-└── README.md
-```
+Download the latest APK from the [Releases](https://github.com/davizofficial/VoltCheck/releases) page and install it on your Android device.
 
 ## Contributing
 
-Contributions are welcome and appreciated. This project is open source and designed for educational purposes.
-
-### How to Contribute
-
+Contributions are welcome! If you have suggestions or bug fixes:
 1. Fork the repository
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/YourFeatureName
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add: Brief description of your changes"
-   ```
-4. Push to your branch:
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
-5. Open a Pull Request with a detailed description
-
-### Contribution Guidelines
-- Follow existing code style and conventions
-- Write clear commit messages
-- Test your changes thoroughly
-- Update documentation as needed
-- Ensure backward compatibility
-
-## Development
-
-### Prerequisites
-- Android Studio Arctic Fox (2020.3.1) or newer
-- JDK 8 or higher
-- Android SDK with API 24+
-- Gradle 7.0+
-
-### Setup Development Environment
-```bash
-# Clone repository
-git clone https://github.com/davizofficial/VoltCheck.git
-
-# Open in Android Studio
-# File > Open > Select VoltCheck directory
-
-# Sync Gradle files
-# Build > Make Project
-```
+2. Create a feature branch (`git checkout -b feature/NewFeature`)
+3. Commit your changes (`git commit -m "Add NewFeature"`)
+4. Push to the branch (`git push origin feature/NewFeature`)
+5. Open a Pull Request
 
 ## License
 
-This project is provided as-is for educational and learning purposes. You are free to use, modify, and distribute this application. See the repository for detailed license information.
+This project is open-source and provided for educational and learning purposes. You are free to use, modify, and distribute this application. See the [LICENSE](LICENSE) file for detailed information.
 
 ## Author
 
 **davizofficial**
-
-- GitHub: [@davizofficial](https://github.com/davizofficial)
+- GitHub: [davizofficial](https://github.com/davizofficial)
 - Project Link: [https://github.com/davizofficial/VoltCheck](https://github.com/davizofficial/VoltCheck)
-
-## Acknowledgments
-
-This project utilizes the following open-source libraries and resources:
-
-- [Material Design Components](https://github.com/material-components/material-components-android) - Google
-- [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) - Philipp Jahoda
-- [Android Open Source Project](https://source.android.com/) - Google
 
 ## Support
 
 For questions, bug reports, or feature requests:
-
 - **Issues**: [GitHub Issues](https://github.com/davizofficial/VoltCheck/issues)
-- **Pull Requests**: [GitHub Pull Requests](https://github.com/davizofficial/VoltCheck/pulls)
 - **Discussions**: [GitHub Discussions](https://github.com/davizofficial/VoltCheck/discussions)
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
-
-## Roadmap
-
-Future enhancements under consideration:
-
-- Widget support for home screen
-- Battery wear level calculation
-- Charging cycle counter
-- Power consumption analysis
-- Battery health predictions
-- Cloud backup for historical data
 
 ---
 
-**Note**: Battery current measurement accuracy depends on device hardware capabilities. Some devices may not support all features.
+**Note**: Battery current measurement accuracy depends entirely on your device's hardware capabilities and kernel implementation. Some custom ROMs or specific manufacturers may not expose raw current data accurately.
 
-Copyright (c) 2025 davizofficial. All rights reserved.
+Copyright (c) 2026 davizofficial. All rights reserved.
