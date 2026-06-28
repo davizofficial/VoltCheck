@@ -43,8 +43,6 @@ public class BatteryService extends Service {
     private static final long ALERT_COOLDOWN = 60000; // 1 menit cooldown antar alert
     private boolean hasAlarmPlayed = false;
     private boolean hasAlmostFullPlayed = false;
-                hasAlmostFullPlayed = false;
-    private boolean hasAlmostFullPlayed = false;
     
     @Override
     public void onCreate() {

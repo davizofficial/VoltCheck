@@ -306,32 +306,7 @@ public class SettingsActivity extends AppCompatActivity {
      * Setup all listeners
      */
     private void setupListeners() {
-        // Dark Mode Switch
-        SwitchCompat switchDarkMode = findViewById(R.id.switchDarkMode);
-        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (!buttonView.isPressed()) return; // Ignore programmatic changes
-            
-            int theme = isChecked ? 1 : 0; // 0: Light, 1: Dark
-            prefs.edit().putInt("theme", theme).apply();
-            
-            // Apply theme
-            if (isChecked) {
-                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
-                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-                );
-            } else {
-                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
-                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-                );
-            }
-            
-            Toast.makeText(SettingsActivity.this, "Theme changed. Restarting...", Toast.LENGTH_SHORT).show();
-            
-            // Restart activity
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                recreate();
-            }, 500);
-        });
+
         
         // Language Item Click
         TextView tvLanguageValue = findViewById(R.id.tvLanguageValue);
