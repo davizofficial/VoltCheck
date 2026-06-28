@@ -664,44 +664,7 @@
                 android:elevation="1dp"
                 android:layout_marginBottom="24dp">
 
-                <!-- Clear History -->
-                <LinearLayout
-                    android:id="@+id/itemClearHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="?attr/selectableItemBackground">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_clear_history"
-                        android:tint="@color/purple_primary" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/set_clear_hist"
-                        android:textColor="@color/text_dark"
-                        android:textSize="16sp"
-                        android:layout_marginStart="16dp" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_text" />
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_divider"
-                    android:layout_marginStart="56dp" />
 
                 <!-- App Permissions -->
                 <LinearLayout
@@ -735,51 +698,7 @@
                         android:tint="@color/gray_text" />
                 </LinearLayout>
 
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_divider"
-                    android:layout_marginStart="56dp" />
 
-                <!-- Export Data (Added) -->
-                <LinearLayout
-                    android:id="@+id/btnExportData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="?attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_document"
-                        android:tint="@color/purple_primary" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/set_export_data"
-                        android:textColor="@color/text_dark"
-                        android:textSize="16sp"
-                        android:layout_marginStart="16dp" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        android:tint="@color/gray_text" />
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_divider"
-                    android:layout_marginStart="56dp" />
 
                 <!-- Background Service (Added) -->
                 <LinearLayout

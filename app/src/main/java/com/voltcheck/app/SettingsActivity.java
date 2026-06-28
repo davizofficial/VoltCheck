@@ -306,7 +306,6 @@ public class SettingsActivity extends AppCompatActivity {
      * Setup all listeners
      */
     private void setupListeners() {
-
         
         // Language Item Click
         TextView tvLanguageValue = findViewById(R.id.tvLanguageValue);
@@ -355,20 +354,7 @@ public class SettingsActivity extends AppCompatActivity {
             prefs.edit().putBoolean("alert_slow_charging", isChecked).apply();
             Toast.makeText(this, "Battery low alert " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
         });
-        
-        // Clear History Click
-        findViewById(R.id.itemClearHistory).setOnClickListener(v -> {
-            new MaterialAlertDialogBuilder(this)
-                .setTitle("Clear History")
-                .setMessage("Are you sure you want to clear all battery data history?")
-                .setPositiveButton("Clear", (dialog, which) -> {
-                    BatteryDataLogger.clearDataLog(this);
-                    Toast.makeText(this, "History cleared", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-        });
-        
+
         // App Permissions Click
         findViewById(R.id.itemAppPermissions).setOnClickListener(v -> {
             Intent intent = new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
@@ -531,10 +517,7 @@ public class SettingsActivity extends AppCompatActivity {
             prefs.edit().putBoolean("decimal_precision", isChecked).apply();
             Toast.makeText(this, "Decimal precision " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
         });
-        
-        // Export Data Click (btnExportData is now a LinearLayout)
-        findViewById(R.id.btnExportData).setOnClickListener(v -> exportData());
-        
+
         // Background Service Switch
         switchBackgroundService.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!buttonView.isPressed()) return;
@@ -582,98 +565,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Export data to CSV
      */
-    private void exportData() {
-        try {
-            // Get logged data
-            java.util.List<BatteryDataLogger.BatteryData> dataList = BatteryDataLogger.getDataLog(this);
-            
-            if (dataList.isEmpty()) {
-                Toast.makeText(this, "No data to export. Please monitor battery for a while first.", Toast.LENGTH_LONG).show();
-                return;
-            }
-            
-            // Create filename with timestamp
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-            String filename = "voltcheck_export_" + timestamp + ".csv";
-            
-            // Get external storage directory
-            File exportDir = new File(getExternalFilesDir(null), "exports");
-            if (!exportDir.exists()) {
-                exportDir.mkdirs();
-            }
-            
-            File file = new File(exportDir, filename);
-            FileWriter writer = new FileWriter(file);
-            
-            // Write CSV header
-            writer.append("Timestamp,Current (mA),Voltage (V),Temperature (°C),Level (%),Status\n");
-            
-            // Write real data
-            for (BatteryDataLogger.BatteryData data : dataList) {
-                writer.append(data.timestamp);
-                writer.append(",");
-                writer.append(String.format(Locale.US, "%.2f", data.current));
-                writer.append(",");
-                writer.append(String.format(Locale.US, "%.3f", data.voltage));
-                writer.append(",");
-                writer.append(String.format(Locale.US, "%.1f", data.temperature));
-                writer.append(",");
-                writer.append(String.valueOf(data.level));
-                writer.append(",");
-                writer.append(data.status.replace("\n", " "));
-                writer.append("\n");
-            }
-            
-            writer.flush();
-            writer.close();
-            
-            // Show success message
-            String message = String.format("Data exported: %d entries\n\nFile: %s\nLocation: exports folder", 
-                dataList.size(), file.getName());
-            
-            new MaterialAlertDialogBuilder(this)
-                .setTitle("Export Successful")
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .setNeutralButton("Share", (dialog, which) -> shareFile(file))
-                .setNegativeButton("Clear Data", (dialog, which) -> {
-                    BatteryDataLogger.clearDataLog(this);
-                    Toast.makeText(this, "Data log cleared", Toast.LENGTH_SHORT).show();
-                })
-                .show();
-                
-        } catch (IOException e) {
-            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-    
-    /**
-     * Share exported file
-     */
-    private void shareFile(File file) {
-        try {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/csv");
-            
-            // Use FileProvider for Android 7.0+
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri fileUri = androidx.core.content.FileProvider.getUriForFile(
-                    this,
-                    getApplicationContext().getPackageName() + ".fileprovider",
-                    file
-                );
-                shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } else {
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            }
-            
-            startActivity(Intent.createChooser(shareIntent, "Share CSV"));
-        } catch (Exception e) {
-            Toast.makeText(this, "Share failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-    
+
     /**
      * Show change log dialog
      */

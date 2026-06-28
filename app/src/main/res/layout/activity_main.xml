@@ -591,51 +591,6 @@
                 android:layout_height="0dp"
                 android:visibility="gone" />
 
-            <!-- Tools Section -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tools"
-                android:textColor="@color/purple_primary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:layout_marginBottom="16dp">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnTestMode"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
-                    android:textSize="12sp"
-                    android:text="Test Mode" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnHistory"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="4dp"
-                    android:textSize="12sp"
-                    android:text="History" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnThreshold"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:textSize="12sp"
-                    android:text="Thresholds" />
-            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imgBattery"

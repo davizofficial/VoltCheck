@@ -238,15 +238,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupClickListeners() {
         // Settings button
         findViewById(R.id.btnSettings).setOnClickListener(v -> openSettings());
-        
-        // Test Mode button
-        findViewById(R.id.btnTestMode).setOnClickListener(v -> openTestMode());
-        
-        // History button
-        findViewById(R.id.btnHistory).setOnClickListener(v -> openHistory());
-        
-        // Threshold Settings button
-        findViewById(R.id.btnThreshold).setOnClickListener(v -> openThresholdSettings());
     }
     
     /**
@@ -613,63 +604,7 @@ public class MainActivity extends AppCompatActivity {
     
     // ===== Navigation Methods =====
     
-    private void openTestMode() {
-        if (!isCurrentSupported) {
-            Toast.makeText(this, "Test Mode memerlukan pembacaan arus yang tidak didukung device Anda", Toast.LENGTH_LONG).show();
-            return;
-        }
-        Intent intent = new Intent(this, TestModeActivity.class);
-        startActivity(intent);
-    }
-    
-    private void openHistory() {
-        Intent intent = new Intent(this, HistoryActivity.class);
-        startActivity(intent);
-    }
-    
-    private void openThresholdSettings() {
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_threshold, null);
-        
-        Slider sliderCurrent = dialogView.findViewById(R.id.sliderLowCurrent);
-        Slider sliderTemp = dialogView.findViewById(R.id.sliderHighTemp);
-        Slider sliderStability = dialogView.findViewById(R.id.sliderStability);
-        TextView tvCurrentValue = dialogView.findViewById(R.id.tvCurrentValue);
-        TextView tvTempValue = dialogView.findViewById(R.id.tvTempValue);
-        TextView tvStabilityValue = dialogView.findViewById(R.id.tvStabilityValue);
-        
-        float savedCurrent = preferences.getFloat("threshold_low_current", 500f);
-        float savedTemp = preferences.getFloat("threshold_high_temp", 45f);
-        float savedStability = preferences.getFloat("threshold_stability", 80f);
-        
-        sliderCurrent.setValue(savedCurrent);
-        sliderTemp.setValue(savedTemp);
-        sliderStability.setValue(savedStability);
-        
-        tvCurrentValue.setText(String.format("%.0f mA", savedCurrent));
-        tvTempValue.setText(String.format("%.0f°C", savedTemp));
-        tvStabilityValue.setText(String.format("%.0f%%", savedStability));
-        
-        sliderCurrent.addOnChangeListener((slider, value, fromUser) -> 
-            tvCurrentValue.setText(String.format("%.0f mA", value)));
-        sliderTemp.addOnChangeListener((slider, value, fromUser) -> 
-            tvTempValue.setText(String.format("%.0f°C", value)));
-        sliderStability.addOnChangeListener((slider, value, fromUser) -> 
-            tvStabilityValue.setText(String.format("%.0f%%", value)));
-        
-        new MaterialAlertDialogBuilder(this)
-            .setTitle("Threshold Settings")
-            .setView(dialogView)
-            .setPositiveButton("Save", (dialog, which) -> {
-                preferences.edit()
-                    .putFloat("threshold_low_current", sliderCurrent.getValue())
-                    .putFloat("threshold_high_temp", sliderTemp.getValue())
-                    .putFloat("threshold_stability", sliderStability.getValue())
-                    .apply();
-                Toast.makeText(this, "Threshold saved", Toast.LENGTH_SHORT).show();
-            })
-            .setNegativeButton("Cancel", null)
-            .show();
-    }
+
     
     private void openSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
