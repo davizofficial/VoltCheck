@@ -42,6 +42,9 @@ public class BatteryService extends Service {
     private long lastUnstableAlert = 0;
     private static final long ALERT_COOLDOWN = 60000; // 1 menit cooldown antar alert
     private boolean hasAlarmPlayed = false;
+    private boolean hasAlmostFullPlayed = false;
+                hasAlmostFullPlayed = false;
+    private boolean hasAlmostFullPlayed = false;
     
     @Override
     public void onCreate() {
@@ -49,7 +52,7 @@ public class BatteryService extends Service {
         Log.d(TAG, "Service created");
         
         batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
-        preferences = getSharedPreferences("VoltCheckPrefs", MODE_PRIVATE);
+        preferences = getSharedPreferences("VoltCheckSettings", MODE_PRIVATE);
         handler = new Handler(Looper.getMainLooper());
         
         // Buat notification channels
@@ -141,6 +144,7 @@ public class BatteryService extends Service {
             } else {
                 // Reset alarm flag if not charging
                 hasAlarmPlayed = false;
+                hasAlmostFullPlayed = false;
             }
             
         } catch (Exception e) {
@@ -163,6 +167,13 @@ public class BatteryService extends Service {
                 NotificationUtil.createForegroundNotification(this, "Battery Alarm: " + level + "%");
                 hasAlarmPlayed = true;
             }
+        }
+        
+        // Cek Almost Full (80%)
+        boolean almostFullAlert = preferences.getBoolean("alert_almost_full", false);
+        if (almostFullAlert && level >= 80 && !hasAlmostFullPlayed) {
+            NotificationUtil.createForegroundNotification(this, "Battery Almost Full: " + level + "%");
+            hasAlmostFullPlayed = true;
         }
         
         // Cek arus rendah
@@ -193,9 +204,9 @@ public class BatteryService extends Service {
         
         if (recentCurrentSamples.size() >= STABILITY_SAMPLE_SIZE) {
             if (isChargingUnstable()) {
-                boolean alertEnabled = preferences.getBoolean("alert_fast_charging", true); // Using fast charging toggle for stability for now as per UI
-                if (alertEnabled && currentTime - lastUnstableAlert > ALERT_COOLDOWN) {
-                    NotificationUtil.sendUnstableChargingAlert(this);
+                boolean alertEnabled = preferences.getBoolean("alert_fast_charging", true);
+                if (alertEnabled && current > 2000 && currentTime - lastUnstableAlert > ALERT_COOLDOWN) {
+                    NotificationUtil.sendUnstableChargingAlert(this); // You can modify this to say Fast Charging
                     lastUnstableAlert = currentTime;
                 }
             }
@@ -257,32 +268,14 @@ public class BatteryService extends Service {
             Log.d(TAG, "Raw CURRENT_NOW: " + currentNow);
             
             if (currentNow != Integer.MIN_VALUE && currentNow != 0) {
-                float currentMA;
-                
-                if (Math.abs(currentNow) > 10000) {
-                    // Nilai besar = mikroampere (µA)
-                    currentMA = currentNow / 1000f;
-                } else {
-                    // Nilai kecil = miliampere (mA)
-                    currentMA = (float) currentNow;
-                }
-                
-                return Math.abs(currentMA);
+                return Math.abs(currentNow / 1000f);
             }
             
             // Fallback: CURRENT_AVERAGE
             int currentAvg = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
             
             if (currentAvg != Integer.MIN_VALUE && currentAvg != 0) {
-                float currentMA;
-                
-                if (Math.abs(currentAvg) > 10000) {
-                    currentMA = currentAvg / 1000f;
-                } else {
-                    currentMA = (float) currentAvg;
-                }
-                
-                return Math.abs(currentMA);
+                return Math.abs(currentAvg / 1000f);
             }
             
             return 0f;
