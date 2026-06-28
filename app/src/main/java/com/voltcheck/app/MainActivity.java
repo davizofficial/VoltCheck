@@ -239,15 +239,14 @@ public class MainActivity extends AppCompatActivity {
         // Settings button
         findViewById(R.id.btnSettings).setOnClickListener(v -> openSettings());
         
-        // TODO: Add these buttons to layout if needed
         // Test Mode button
-        // findViewById(R.id.btnTestMode).setOnClickListener(v -> openTestMode());
+        findViewById(R.id.btnTestMode).setOnClickListener(v -> openTestMode());
         
         // History button
-        // findViewById(R.id.btnHistory).setOnClickListener(v -> openHistory());
+        findViewById(R.id.btnHistory).setOnClickListener(v -> openHistory());
         
         // Threshold Settings button
-        // findViewById(R.id.btnThreshold).setOnClickListener(v -> openThresholdSettings());
+        findViewById(R.id.btnThreshold).setOnClickListener(v -> openThresholdSettings());
     }
     
     /**
@@ -464,23 +463,11 @@ public class MainActivity extends AppCompatActivity {
         try {
             int currentNow = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW);
             if (currentNow != Integer.MIN_VALUE && currentNow != 0) {
-                float currentMA;
-                if (Math.abs(currentNow) > 10000) {
-                    currentMA = currentNow / 1000f;
-                } else {
-                    currentMA = (float) currentNow;
-                }
-                return currentMA;
+                return currentNow / 1000f;
             }
             int currentAvg = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
             if (currentAvg != Integer.MIN_VALUE && currentAvg != 0) {
-                float currentMA;
-                if (Math.abs(currentAvg) > 10000) {
-                    currentMA = currentAvg / 1000f;
-                } else {
-                    currentMA = (float) currentAvg;
-                }
-                return currentMA;
+                return currentAvg / 1000f;
             }
             return 0f;
         } catch (Exception e) {
