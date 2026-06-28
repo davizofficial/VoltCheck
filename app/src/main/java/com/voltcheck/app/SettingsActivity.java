@@ -47,7 +47,6 @@ public class SettingsActivity extends AppCompatActivity {
     // UI Components - General
     private Spinner spinnerLanguage;
     private Spinner spinnerTheme;
-    private Spinner spinnerRefreshInterval;
     
     // UI Components - Notifications
     private SwitchCompat switchFastCharging;
@@ -61,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView tvAlarmLevel;
     
     // UI Components - Battery Info
-    private SwitchCompat switchShowTimeToFull;
+    private SwitchCompat switchAlmostFull;
     private EditText etDesignCapacity;
     
     // UI Components - Measurement
@@ -132,7 +131,6 @@ public class SettingsActivity extends AppCompatActivity {
         // General
         spinnerLanguage = findViewById(R.id.spinnerLanguage);
         spinnerTheme = findViewById(R.id.spinnerTheme);
-        spinnerRefreshInterval = findViewById(R.id.spinnerRefreshInterval);
         
         // Notifications
         switchFastCharging = findViewById(R.id.switchFastCharging);
@@ -146,7 +144,7 @@ public class SettingsActivity extends AppCompatActivity {
         tvAlarmLevel = findViewById(R.id.tvAlarmLevel);
         
         // Battery Info
-        switchShowTimeToFull = findViewById(R.id.switchShowTimeToFull);
+        switchAlmostFull = findViewById(R.id.switchAlmostFull);
         etDesignCapacity = findViewById(R.id.etDesignCapacity);
         
         // Measurement
@@ -201,13 +199,7 @@ public class SettingsActivity extends AppCompatActivity {
         themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTheme.setAdapter(themeAdapter);
         
-        // Refresh interval spinner
-        ArrayAdapter<CharSequence> intervalAdapter = ArrayAdapter.createFromResource(
-            this, R.array.refresh_interval_options, android.R.layout.simple_spinner_item
-        );
-        intervalAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRefreshInterval.setAdapter(intervalAdapter);
-        
+
         // Units spinner
         ArrayAdapter<CharSequence> unitsAdapter = ArrayAdapter.createFromResource(
             this, R.array.units_options, android.R.layout.simple_spinner_item
@@ -222,8 +214,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void loadSettings() {
         // Load Dark Mode
         int theme = prefs.getInt("theme", 2); // 0: Light, 1: Dark, 2: System
-        SwitchCompat switchDarkMode = findViewById(R.id.switchDarkMode);
-        switchDarkMode.setChecked(theme == 1);
         
         // Load Language
         String language = LocaleHelper.getLanguage(this);
@@ -240,12 +230,7 @@ public class SettingsActivity extends AppCompatActivity {
         // Load Battery Low Alert (Slow Charging)
         switchSlowCharging.setChecked(prefs.getBoolean("alert_slow_charging", true));
         
-        // Load Refresh Interval
-        int refreshInterval = prefs.getInt("refresh_interval", 1);
-        String[] intervals = {"0.5s", "1s", "2s", "5s"};
-        TextView tvRefreshIntervalValue = findViewById(R.id.tvRefreshIntervalValue);
-        tvRefreshIntervalValue.setText(intervals[refreshInterval]);
-        
+
         // Load Fast Charging Alert
         switchFastCharging.setChecked(prefs.getBoolean("alert_fast_charging", true));
         
@@ -259,8 +244,15 @@ public class SettingsActivity extends AppCompatActivity {
         tvAlarmLevel.setText(String.format(getString(R.string.alarm_level_format), savedAlarmLevel));
         
         // Load Show Time to Full
-        switchShowTimeToFull.setChecked(prefs.getBoolean("show_time_to_full", false));
+        switchAlmostFull.setChecked(prefs.getBoolean("alert_almost_full", false));
         
+        // Load Refresh Interval
+        int refreshIntervalIndex = prefs.getInt("refresh_interval", 0);
+        String[] intervals = {"1s", "5s", "10s"};
+        TextView tvRefreshIntervalValue = findViewById(R.id.tvRefreshIntervalValue);
+        if (tvRefreshIntervalValue != null && refreshIntervalIndex >= 0 && refreshIntervalIndex < intervals.length) {
+            tvRefreshIntervalValue.setText(intervals[refreshIntervalIndex]);
+        }
         // Load Design Capacity
         etDesignCapacity.setText(String.valueOf(prefs.getInt("design_capacity", 4500)));
         
@@ -291,7 +283,6 @@ public class SettingsActivity extends AppCompatActivity {
             spinnerLanguage.setSelection(0);
         }
         spinnerTheme.setSelection(prefs.getInt("theme", 2));
-        spinnerRefreshInterval.setSelection(prefs.getInt("refresh_interval", 1));
         
         // Hidden switches for compatibility
         switchFastCharging.setChecked(prefs.getBoolean("alert_fast_charging", true));
@@ -302,7 +293,7 @@ public class SettingsActivity extends AppCompatActivity {
         sliderAlarmLevel.setValue(alarmLevel);
         tvAlarmLevel.setText(String.format(getString(R.string.alarm_level_format), alarmLevel));
         
-        switchShowTimeToFull.setChecked(prefs.getBoolean("show_time_to_full", false));
+        switchAlmostFull.setChecked(prefs.getBoolean("alert_almost_full", false));
         etDesignCapacity.setText(String.valueOf(prefs.getInt("design_capacity", 4500)));
         
         spinnerUnits.setSelection(prefs.getInt("units", 0));
@@ -458,21 +449,33 @@ public class SettingsActivity extends AppCompatActivity {
         // Refresh Interval Click
         TextView tvRefreshIntervalValue = findViewById(R.id.tvRefreshIntervalValue);
         findViewById(R.id.itemRefreshInterval).setOnClickListener(v -> {
-            String[] intervals = {"0.5s", "1s", "2s", "5s"};
-            int currentInterval = prefs.getInt("refresh_interval", 1);
+            String[] intervals = {"1s", "5s", "10s"};
+            int currentInterval = prefs.getInt("refresh_interval", 0); // Default to index 0 (1s)
             
             new MaterialAlertDialogBuilder(this)
                 .setTitle("Refresh Interval")
                 .setSingleChoiceItems(intervals, currentInterval, (dialog, which) -> {
                     prefs.edit().putInt("refresh_interval", which).apply();
-                    tvRefreshIntervalValue.setText(intervals[which]);
+                    if (tvRefreshIntervalValue != null) tvRefreshIntervalValue.setText(intervals[which]);
                     Toast.makeText(this, "Refresh interval set to " + intervals[which], Toast.LENGTH_SHORT).show();
+                    
+                    // Restart BatteryService if it is running to apply the new interval
+                    if (prefs.getBoolean("background_service", false)) {
+                        Intent serviceIntent = new Intent(SettingsActivity.this, BatteryService.class);
+                        stopService(serviceIntent);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            startForegroundService(serviceIntent);
+                        } else {
+                            startService(serviceIntent);
+                        }
+                    }
+                    
                     dialog.dismiss();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
         });
-        
+
         // Fast Charging Alert Switch
         switchFastCharging.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!buttonView.isPressed()) return;
@@ -502,9 +505,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
         
         // Show Time to Full Switch
-        switchShowTimeToFull.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        switchAlmostFull.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!buttonView.isPressed()) return;
-            prefs.edit().putBoolean("show_time_to_full", isChecked).apply();
+            prefs.edit().putBoolean("alert_almost_full", isChecked).apply();
             Toast.makeText(this, "Time to full " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
         });
         
@@ -578,163 +581,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         
-        // General - Language (Hidden Spinner - for compatibility)
-        spinnerLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedLang = position == 1 ? "in" : "en";
-                String currentLang = LocaleHelper.getLanguage(SettingsActivity.this);
-                
-                if (!selectedLang.equals(currentLang)) {
-                    LocaleHelper.setLocale(SettingsActivity.this, selectedLang);
-                    
-                    // Restart app to apply language
-                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
-            }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        
-        // General - Theme
-        spinnerTheme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int oldTheme = prefs.getInt("theme", 2);
-                if (oldTheme != position) {
-                    prefs.edit().putInt("theme", position).apply();
-                    
-                    // Apply theme
-                    switch (position) {
-                        case 0: // Light
-                            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
-                                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-                            );
-                            break;
-                        case 1: // Dark
-                            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
-                                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
-                            );
-                            break;
-                        case 2: // System Default
-                            androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
-                                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                            );
-                            break;
-                    }
-                    
-                    Toast.makeText(SettingsActivity.this, "Theme changed. Restarting app...", Toast.LENGTH_SHORT).show();
-                    
-                    // Restart activity to apply theme
-                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                        recreate();
-                    }, 500);
-                }
-            }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        
-        // General - Refresh Interval
-        spinnerRefreshInterval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                prefs.edit().putInt("refresh_interval", position).apply();
-                
-                // Get interval in milliseconds
-                long interval = getRefreshIntervalMs(position);
-                String intervalText = parent.getItemAtPosition(position).toString();
-                
-                Toast.makeText(SettingsActivity.this, 
-                    "Refresh interval set to " + intervalText, 
-                    Toast.LENGTH_SHORT).show();
-            }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        
-        // Notifications
-        switchFastCharging.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("alert_fast_charging", isChecked).apply();
-            Toast.makeText(this, "Fast charging alert " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
-        });
-        
-        switchSlowCharging.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("alert_slow_charging", isChecked).apply();
-            Toast.makeText(this, "Slow charging alert " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
-        });
-        
-        switchBatteryFull.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("alert_battery_full", isChecked).apply();
-            Toast.makeText(this, "Battery full alert " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
-        });
-        
-        switchTemperature.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("alert_temperature", isChecked).apply();
-            Toast.makeText(this, "Temperature alert " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
-        });
-        
-        // Alarm
-        switchFullChargeAlarm.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("alarm_full_charge", isChecked).apply();
-        });
-        
-        sliderAlarmLevel.addOnChangeListener((slider, value, fromUser) -> {
-            int level = (int) value;
-            tvAlarmLevel.setText(String.format(getString(R.string.alarm_level_format), level));
-            prefs.edit().putInt("alarm_level", level).apply();
-        });
-        
-        // Battery Info
-        switchShowTimeToFull.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("show_time_to_full", isChecked).apply();
-        });
-        
-        etDesignCapacity.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            
-            @Override
-            public void afterTextChanged(Editable s) {
-                try {
-                    if (s.length() > 0) {
-                        int capacity = Integer.parseInt(s.toString());
-                        prefs.edit().putInt("design_capacity", capacity).apply();
-                    }
-                } catch (NumberFormatException e) {
-                    // Ignore
-                }
-            }
-        });
-        
-        // Measurement - Units
-        
-        // Measurement - Units
-        spinnerUnits.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                prefs.edit().putInt("units", position).apply();
-                String unit = parent.getItemAtPosition(position).toString();
-                Toast.makeText(SettingsActivity.this, "Unit changed to " + unit, Toast.LENGTH_SHORT).show();
-            }
-            
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-        
-        switchDecimalPrecision.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("decimal_precision", isChecked).apply();
-            Toast.makeText(this, "Decimal precision " + (isChecked ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
-        });
-        
+
         // Data
         switchSessionSummary.setOnCheckedChangeListener((buttonView, isChecked) -> {
             prefs.edit().putBoolean("session_summary", isChecked).apply();
@@ -749,25 +596,7 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
         
-        switchBackgroundService.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            prefs.edit().putBoolean("background_service", isChecked).apply();
-            
-            Intent serviceIntent = new Intent(SettingsActivity.this, BatteryService.class);
-            if (isChecked) {
-                // Start background service
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(serviceIntent);
-                } else {
-                    startService(serviceIntent);
-                }
-                Toast.makeText(this, "Background service enabled", Toast.LENGTH_SHORT).show();
-            } else {
-                // Stop background service
-                stopService(serviceIntent);
-                Toast.makeText(this, "Background service disabled", Toast.LENGTH_SHORT).show();
-            }
-        });
-        
+
         // About - Change Log
         findViewById(R.id.btnChangeLog).setOnClickListener(v -> showChangeLog());
         
@@ -908,30 +737,16 @@ public class SettingsActivity extends AppCompatActivity {
     }
     
     /**
-     * Get refresh interval in milliseconds
-     */
-    private long getRefreshIntervalMs(int position) {
-        switch (position) {
-            case 0: return 500;   // 0.5s
-            case 1: return 1000;  // 1s
-            case 2: return 2000;  // 2s
-            case 3: return 5000;  // 5s
-            default: return 1000;
-        }
-    }
-    
-    /**
      * Get refresh interval from SharedPreferences
      */
     public static long getRefreshInterval(android.content.Context context) {
         android.content.SharedPreferences prefs = context.getSharedPreferences("VoltCheckSettings", android.content.Context.MODE_PRIVATE);
-        int position = prefs.getInt("refresh_interval", 1);
+        int position = prefs.getInt("refresh_interval", 0); // Default to 0 -> 1s
         switch (position) {
-            case 0: return 500;
-            case 1: return 1000;
-            case 2: return 2000;
-            case 3: return 5000;
-            default: return 1000;
+            case 0: return 1000L;  // 1s
+            case 1: return 5000L;  // 5s
+            case 2: return 10000L; // 10s
+            default: return 1000L; // Fallback 1s
         }
     }
     

@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="VoltCheck Settings"
+            android:text="@string/set_title"
             android:textColor="@color/text_dark"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GENERAL"
+                android:text="@string/set_general"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -67,44 +67,6 @@
                 android:elevation="1dp"
                 android:layout_marginBottom="24dp">
 
-                <!-- Dark Mode -->
-                <LinearLayout
-                    android:id="@+id/itemDarkMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:background="?attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_dark_mode"
-                        android:tint="@color/purple_primary" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Dark Mode"
-                        android:textColor="@color/text_dark"
-                        android:textSize="16sp"
-                        android:layout_marginStart="16dp" />
-
-                    <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchDarkMode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/PurpleSwitchTheme" />
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_divider"
-                    android:layout_marginStart="56dp" />
 
                 <!-- Language -->
                 <LinearLayout
@@ -126,7 +88,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Language"
+                        android:text="@string/set_lang"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -154,7 +116,7 @@
                     android:background="@color/gray_divider"
                     android:layout_marginStart="56dp" />
 
-                <!-- Refresh Interval (Added) -->
+                <!-- Refresh Interval -->
                 <LinearLayout
                     android:id="@+id/itemRefreshInterval"
                     android:layout_width="match_parent"
@@ -174,7 +136,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Refresh Interval"
+                        android:text="@string/set_refresh"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -194,13 +156,15 @@
                         android:src="@drawable/ic_chevron_right"
                         android:tint="@color/gray_text" />
                 </LinearLayout>
+
+
             </LinearLayout>
 
             <!-- NOTIFICATIONS Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NOTIFICATIONS"
+                android:text="@string/set_notif"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -234,7 +198,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Show Notifications"
+                        android:text="@string/set_show_notif"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -272,7 +236,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Battery Full Alert"
+                        android:text="@string/set_full_alert"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -309,7 +273,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Battery Low Alert"
+                        android:text="@string/set_low_alert"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -347,7 +311,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Fast Charging Alert"
+                        android:text="@string/set_fast_alert"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -385,7 +349,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Temperature Alert"
+                        android:text="@string/set_temp_alert"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -403,7 +367,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ALARM"
+                android:text="@string/set_alarm"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -438,7 +402,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Full Charge Alarm"
+                        android:text="@string/set_full_alarm"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -454,7 +418,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Alarm Level"
+                    android:text="@string/set_alarm_level"
                     android:textColor="@color/gray_text"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp" />
@@ -475,7 +439,7 @@
                     android:id="@+id/tvAlarmLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Alert at 100%"
+                    android:text="@string/set_alert_100"
                     android:textColor="@color/text_dark"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -485,7 +449,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BATTERY INFO"
+                android:text="@string/set_bat_info"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -501,7 +465,7 @@
                 android:elevation="1dp"
                 android:layout_marginBottom="24dp">
 
-                <!-- Show Time to Full -->
+                <!-- Almost Full Alert -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -512,20 +476,20 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_clear_history"
+                        android:src="@drawable/ic_notifications"
                         android:tint="@color/purple_primary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Show Time to Full"
+                        android:text="@string/set_almost_full"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchShowTimeToFull"
+                        android:id="@+id/switchAlmostFull"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/PurpleSwitchTheme" />
@@ -561,7 +525,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Design Capacity (mAh)"
+                            android:text="@string/set_design_cap"
                             android:textColor="@color/text_dark"
                             android:textSize="16sp"
                             android:layout_marginStart="16dp" />
@@ -584,7 +548,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MEASUREMENT"
+                android:text="@string/set_measure"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -620,7 +584,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Units"
+                        android:text="@string/set_units"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -666,7 +630,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Decimal Precision"
+                        android:text="@string/set_precision"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -684,7 +648,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DATA &amp; PERMISSIONS"
+                android:text="@string/set_data_perm"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -720,7 +684,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Clear History"
+                        android:text="@string/set_clear_hist"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -759,7 +723,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="App Permissions"
+                        android:text="@string/set_app_perm"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -798,7 +762,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Export Data"
+                        android:text="@string/set_export_data"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -835,7 +799,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Background Service"
+                        android:text="@string/set_bg_service"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -852,7 +816,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ABOUT"
+                android:text="@string/set_about"
                 android:textColor="@color/gray_text"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -886,7 +850,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Version"
+                        android:text="@string/set_version"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -927,7 +891,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Terms of Service"
+                        android:text="@string/set_tos"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -966,7 +930,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Privacy Policy"
+                        android:text="@string/set_privacy"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
@@ -1005,7 +969,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="About Developer"
+                        android:text="@string/set_developer"
                         android:textColor="@color/text_dark"
                         android:textSize="16sp"
                         android:layout_marginStart="16dp" />
