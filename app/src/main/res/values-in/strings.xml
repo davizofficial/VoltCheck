@@ -110,4 +110,36 @@
     <string name="show_time_to_full">Tampilkan Waktu Hingga Penuh</string>
     <string name="time_remaining">Waktu Hingga Penuh: %s</string>
     <string name="calculating">Menghitung...</string>
+
+    <!-- Settings Extracted -->
+    <string name="set_title">Pengaturan VoltCheck</string>
+    <string name="set_general">UMUM</string>
+    <string name="set_lang">Bahasa</string>
+    <string name="set_refresh">Interval Refresh</string>
+    <string name="set_notif">NOTIFIKASI</string>
+    <string name="set_show_notif">Tampilkan Notifikasi</string>
+    <string name="set_full_alert">Peringatan Baterai Penuh</string>
+    <string name="set_low_alert">Peringatan Baterai Lemah</string>
+    <string name="set_fast_alert">Peringatan Pengisian Cepat</string>
+    <string name="set_temp_alert">Peringatan Suhu Panas</string>
+    <string name="set_alarm">ALARM</string>
+    <string name="set_full_alarm">Alarm Terisi Penuh</string>
+    <string name="set_alarm_level">Level Alarm</string>
+    <string name="set_alert_100">Peringatan di 100%</string>
+    <string name="set_bat_info">INFO BATERAI</string>
+    <string name="set_almost_full">Peringatan Hampir Penuh (80%)</string>
+    <string name="set_design_cap">Kapasitas Desain (mAh)</string>
+    <string name="set_measure">PENGUKURAN</string>
+    <string name="set_units">Satuan</string>
+    <string name="set_precision">Presisi Desimal</string>
+    <string name="set_data_perm">DATA &amp; IZIN</string>
+    <string name="set_clear_hist">Hapus Riwayat</string>
+    <string name="set_app_perm">Izin Aplikasi</string>
+    <string name="set_export_data">Ekspor Data</string>
+    <string name="set_bg_service">Latar Belakang</string>
+    <string name="set_about">TENTANG</string>
+    <string name="set_version">Versi</string>
+    <string name="set_tos">Syarat Ketentuan</string>
+    <string name="set_privacy">Kebijakan Privasi</string>
+    <string name="set_developer">Tentang Pengembang</string>
 </resources>

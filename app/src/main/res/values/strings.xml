@@ -109,4 +109,36 @@
     <string name="show_time_to_full">Show Time to Full</string>
     <string name="time_remaining">Time to Full: %s</string>
     <string name="calculating">Calculating...</string>
+
+    <!-- Settings Extracted -->
+    <string name="set_title">VoltCheck Settings</string>
+    <string name="set_general">GENERAL</string>
+    <string name="set_lang">Language</string>
+    <string name="set_refresh">Refresh Interval</string>
+    <string name="set_notif">NOTIFICATIONS</string>
+    <string name="set_show_notif">Show Notifications</string>
+    <string name="set_full_alert">Battery Full Alert</string>
+    <string name="set_low_alert">Battery Low Alert</string>
+    <string name="set_fast_alert">Fast Charging Alert</string>
+    <string name="set_temp_alert">Temperature Alert</string>
+    <string name="set_alarm">ALARM</string>
+    <string name="set_full_alarm">Full Charge Alarm</string>
+    <string name="set_alarm_level">Alarm Level</string>
+    <string name="set_alert_100">Alert at 100%</string>
+    <string name="set_bat_info">BATTERY INFO</string>
+    <string name="set_almost_full">Almost Full Alert (80%)</string>
+    <string name="set_design_cap">Design Capacity (mAh)</string>
+    <string name="set_measure">MEASUREMENT</string>
+    <string name="set_units">Units</string>
+    <string name="set_precision">Decimal Precision</string>
+    <string name="set_data_perm">DATA &amp; PERMISSIONS</string>
+    <string name="set_clear_hist">Clear History</string>
+    <string name="set_app_perm">App Permissions</string>
+    <string name="set_export_data">Export Data</string>
+    <string name="set_bg_service">Background Service</string>
+    <string name="set_about">ABOUT</string>
+    <string name="set_version">Version</string>
+    <string name="set_tos">Terms of Service</string>
+    <string name="set_privacy">Privacy Policy</string>
+    <string name="set_developer">About Developer</string>
 </resources>
