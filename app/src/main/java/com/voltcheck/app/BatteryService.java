@@ -266,24 +266,30 @@ public class BatteryService extends Service {
             Log.d(TAG, "Raw CURRENT_NOW: " + currentNow);
             
             if (currentNow != Integer.MIN_VALUE && currentNow != 0) {
-                return Math.abs(currentNow / 1000f);
+                return autoScaleCurrent(currentNow);
             }
             
             // Fallback: CURRENT_AVERAGE
             int currentAvg = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
             
             if (currentAvg != Integer.MIN_VALUE && currentAvg != 0) {
-                return Math.abs(currentAvg / 1000f);
+                return autoScaleCurrent(currentAvg);
             }
             
             return 0f;
-            
         } catch (Exception e) {
-            Log.e(TAG, "Error reading current: " + e.getMessage());
             return 0f;
         }
     }
-    
+
+    private float autoScaleCurrent(int currentRaw) {
+        float current = currentRaw;
+        if (Math.abs(current) > 10000) {
+            return Math.abs(current / 1000f);
+        }
+        return Math.abs(current);
+    }
+
     private float getVoltageNow() {
         try {
             IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);

@@ -463,16 +463,26 @@ public class MainActivity extends AppCompatActivity {
         try {
             int currentNow = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW);
             if (currentNow != Integer.MIN_VALUE && currentNow != 0) {
-                return currentNow / 1000f;
+                return autoScaleCurrent(currentNow);
             }
             int currentAvg = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_AVERAGE);
             if (currentAvg != Integer.MIN_VALUE && currentAvg != 0) {
-                return currentAvg / 1000f;
+                return autoScaleCurrent(currentAvg);
             }
             return 0f;
         } catch (Exception e) {
             return 0f;
         }
+    }
+    
+    private float autoScaleCurrent(int currentRaw) {
+        float current = currentRaw;
+        // Phone uses at least 100-300mA. If raw value is < 10000, it's already in mA.
+        // If it's > 10000, it's in microAmperes (uA), so divide by 1000.
+        if (Math.abs(current) > 10000) {
+            return current / 1000f;
+        }
+        return current;
     }
     
     private float getCurrentSmoothed() {
