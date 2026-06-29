@@ -9,8 +9,9 @@ import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.Build;
 import android.util.Log;
-import android.media.Ringtone;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
@@ -43,6 +44,21 @@ public class BatteryService extends Service {
     private static final long ALERT_COOLDOWN = 60000; // 1 menit cooldown antar alert
     private boolean hasAlarmPlayed = false;
     private boolean hasAlmostFullPlayed = false;
+    private MediaPlayer currentMediaPlayer = null;
+    private boolean wasCharging = false;
+    
+    private final android.content.BroadcastReceiver stopAlarmReceiver = new android.content.BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("com.voltcheck.app.STOP_ALARM".equals(intent.getAction())) {
+                stopAlarmSound();
+                android.app.NotificationManager manager = context.getSystemService(android.app.NotificationManager.class);
+                if (manager != null) {
+                    manager.cancel(NotificationUtil.NOTIFICATION_ID_ALERT);
+                }
+            }
+        }
+    };
     
     @Override
     public void onCreate() {
@@ -55,6 +71,13 @@ public class BatteryService extends Service {
         
         // Buat notification channels
         NotificationUtil.createNotificationChannels(this);
+        
+        // Register receiver to stop alarm
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(stopAlarmReceiver, new android.content.IntentFilter("com.voltcheck.app.STOP_ALARM"), Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(stopAlarmReceiver, new android.content.IntentFilter("com.voltcheck.app.STOP_ALARM"));
+        }
     }
     
     @Override
@@ -78,6 +101,9 @@ public class BatteryService extends Service {
         super.onDestroy();
         Log.d(TAG, "Service destroyed");
         stopMonitoring();
+        try {
+            unregisterReceiver(stopAlarmReceiver);
+        } catch (Exception e) {}
     }
     
     @Nullable
@@ -136,6 +162,13 @@ public class BatteryService extends Service {
                     displayCurrent, voltage, temperature);
             updateForegroundNotification(status);
             
+            if (isCharging && !wasCharging) {
+                // Just plugged in
+                if (level >= 80) hasAlmostFullPlayed = true;
+                if (level >= preferences.getInt("alarm_level", 100)) hasAlarmPlayed = true;
+            }
+            wasCharging = isCharging;
+            
             // Cek threshold jika sedang charging
             if (isCharging) {
                 checkThresholds(current, voltage, temperature, level);
@@ -143,6 +176,7 @@ public class BatteryService extends Service {
                 // Reset alarm flag if not charging
                 hasAlarmPlayed = false;
                 hasAlmostFullPlayed = false;
+                stopAlarmSound();
             }
             
         } catch (Exception e) {
@@ -351,12 +385,34 @@ public class BatteryService extends Service {
 
     private void playAlarmSound() {
         try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            if (notification == null) {
-                notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            stopAlarmSound(); // Stop previous if any
+            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            if (soundUri == null) {
+                soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             }
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-            r.play();
+            
+            currentMediaPlayer = new MediaPlayer();
+            currentMediaPlayer.setDataSource(getApplicationContext(), soundUri);
+            currentMediaPlayer.setAudioStreamType(android.media.AudioManager.STREAM_ALARM);
+            currentMediaPlayer.setLooping(true);
+            currentMediaPlayer.prepare();
+            currentMediaPlayer.start();
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to play alarm: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    public void stopAlarmSound() {
+        try {
+            if (currentMediaPlayer != null) {
+                if (currentMediaPlayer.isPlaying()) {
+                    currentMediaPlayer.stop();
+                }
+                currentMediaPlayer.release();
+                currentMediaPlayer = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

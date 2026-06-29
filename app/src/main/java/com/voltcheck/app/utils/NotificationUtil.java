@@ -239,6 +239,15 @@ public class NotificationUtil {
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
         
+        Intent stopIntent = new Intent("com.voltcheck.app.STOP_ALARM");
+        stopIntent.setPackage(context.getPackageName());
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(
+                context,
+                1,
+                stopIntent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         manager.cancel(NOTIFICATION_ID_ALERT);
         
@@ -250,6 +259,7 @@ public class NotificationUtil {
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .addAction(0, "Stop Alarm", stopPendingIntent)
                 .build();
         
         manager.notify(NOTIFICATION_ID_ALERT, notification);
@@ -267,17 +277,27 @@ public class NotificationUtil {
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
         
+        Intent stopIntent = new Intent("com.voltcheck.app.STOP_ALARM");
+        stopIntent.setPackage(context.getPackageName());
+        PendingIntent stopPendingIntent = PendingIntent.getBroadcast(
+                context,
+                2,
+                stopIntent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+        
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         manager.cancel(NOTIFICATION_ID_ALERT);
         
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID_ALERTS)
-                .setContentTitle("🔋 Battery Full!")
+                .setContentTitle("Battery Full!")
                 .setContentText("Battery has reached " + level + "%. Please unplug the charger.")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
+                .addAction(0, "Stop Alarm", stopPendingIntent)
                 .build();
         
         manager.notify(NOTIFICATION_ID_ALERT, notification);
