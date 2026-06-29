@@ -4,14 +4,7 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28" />
 
     <application
         android:name=".VoltCheckApplication"
@@ -34,20 +27,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Test Mode Activity -->
-        <activity
-            android:name=".TestModeActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity" />
-
-        <!-- History Activity -->
-        <activity
-            android:name=".HistoryActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".MainActivity" />
-
         <!-- Settings Activity -->
         <activity
             android:name=".SettingsActivity"
@@ -60,8 +39,7 @@
         <service
             android:name=".BatteryService"
             android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
+            android:exported="false" />
 
         <!-- Charger Receiver -->
         <receiver
@@ -73,17 +51,6 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
-
-        <!-- FileProvider for sharing files -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 
