@@ -151,7 +151,7 @@ Before submitting a Pull Request, please make sure:
 - Documentation is updated if needed
 - Screenshots are included for UI changes
 
-More information. See the [CONTRIBUTING.MD](CONTRIBUTING.MD)
+More information. See the [CONTRIBUTING.MD](https://github.com/davizofficial/VoltCheck/blob/main/CONTRIBUTING.md)
 
 ## License
 
