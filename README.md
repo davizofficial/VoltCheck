@@ -1,6 +1,6 @@
 # VoltCheck
 
-> 🌟 **A 100% Free & Open Source Project**
+>  **A 100% Free & Open Source Project**
 
 A comprehensive battery and electrical current monitoring application for Android devices.
 
@@ -122,16 +122,42 @@ Download the latest APK from the [Releases](https://github.com/davizofficial/Vol
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions or bug fixes:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/NewFeature`)
-3. Commit your changes (`git commit -m "Add NewFeature"`)
-4. Push to the branch (`git push origin feature/NewFeature`)
-5. Open a Pull Request
+Contributions are welcome. You can contribute to VoltCheck by fixing bugs, improving documentation, adding new features, improving UI/UX, or suggesting ideas through Issues.
+
+### How to Contribute
+
+1. Fork this repository
+2. Clone your forked repository
+   ```git clone https://github.com/your-username/VoltCheck.git```
+   ```cd VoltCheck```
+3. Create a new branch
+  ``` git checkout -b feature/your-feature-name ```
+4. Make your changes
+5. Build and test the project
+   ``` ./gradlew assembleDebug ```
+6. Commit your changes
+``` git commit -m "feat: add your feature description" ```
+7. Push your branch
+``` git push origin feature/your-feature-name ```
+8. Open a Pull Request to the main repository
+   
+### Pull Request Guidelines
+
+Before submitting a Pull Request, please make sure:
+
+- The project builds successfully
+- The code follows the existing project style
+- The change is clearly described
+- Documentation is updated if needed
+- Screenshots are included for UI changes
+
+More information. See the [CONTRIBUTING.MD](CONTRIBUTING.MD)
 
 ## License
 
-This project is open-source and provided for educational and learning purposes. You are free to use, modify, and distribute this application. See the [LICENSE](LICENSE) file for detailed information.
+Copyright (c) 2026 davizofficial
+
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Author
 
@@ -149,4 +175,4 @@ For questions, bug reports, or feature requests:
 
 **Note**: Battery current measurement accuracy depends entirely on your device's hardware capabilities and kernel implementation. Some custom ROMs or specific manufacturers may not expose raw current data accurately.
 
-Copyright (c) 2026 davizofficial. All rights reserved.
+Copyright (c) 2026 davizofficial. Open source Project.
